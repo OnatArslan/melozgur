@@ -16,7 +16,7 @@
 :root{--b:160px;--lw:172px;--lh:38px;--gy:30px;--fs:64px;--dz:1.2px;
   --heart:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 28.5C6 21 0 15 0 8.5 0 3.8 3.7 0 8.3 0c3.2 0 6.1 1.9 7.7 4.6C17.6 1.9 20.5 0 23.7 0 28.3 0 32 3.8 32 8.5 32 15 26 21 16 28.5Z'/%3E%3C/svg%3E")}
 html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-#app{position:fixed;inset:0;overflow:hidden}
+#app{position:fixed;inset:0;overflow:hidden;overflow:clip}
 #app.shake{animation:shake .8s cubic-bezier(.36,.07,.19,.97)}
 
 /* ---------- atmosphere ---------- */
@@ -40,7 +40,8 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
   background:radial-gradient(closest-side,rgba(255,255,255,.9),rgba(255,154,213,.45) 35%,transparent 70%);mix-blend-mode:screen}
 
 /* ---------- 3D world ---------- */
-#viewport{perspective:1000px;perspective-origin:50% 45%}
+#viewport{perspective:1000px;perspective-origin:50% 50%}
+.gl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 #scene,#scene *{transform-style:preserve-3d}
 #scene{position:absolute;left:50%;top:50%;width:0;height:0}
 .floor{position:absolute;width:150vmax;height:150vmax;left:-75vmax;top:-75vmax;transform:translateY(calc(var(--gy) + var(--b) * .5 + 46px)) rotateX(90deg);
@@ -104,42 +105,6 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
 .knot{position:absolute;width:calc(var(--b) * .13);height:calc(var(--b) * .11);left:calc(var(--b) * -.065);top:calc(var(--b) * -.1);border-radius:40%;
   background:radial-gradient(circle at 35% 30%,#fff,#ffd0e8 60%,#f39ac6)}
 
-/* ---------- dragon ---------- */
-.dg{position:absolute;left:0;top:0}
-.seg,.head,.tail{position:absolute;left:0;top:0;will-change:transform}
-.seg i{position:absolute;left:0;top:0;width:var(--s);height:var(--s);margin:calc(var(--s) * -.5) 0 0 calc(var(--s) * -.5);border-radius:50%;
-  background:radial-gradient(circle at 40% 30%,#fff1f8 0,#ffa9d6 14%,#ff4fa3 42%,#c4166e 76%,#6e0a3e 100%);
-  box-shadow:0 0 calc(var(--s) * .4) rgba(255,79,163,.5)}
-.seg i::before{content:"";position:absolute;left:4%;top:-34%;width:58%;height:60%;background:linear-gradient(#fff6fb,#ff9ad5);clip-path:polygon(30% 100%,0 0,100% 100%)}
-.leg{position:absolute;left:0;top:0;width:calc(var(--s) * 1.15);height:calc(var(--s) * .26);margin-top:calc(var(--s) * -.13);border-radius:99px;transform-origin:0 50%;
-  background:linear-gradient(90deg,#ff4fa3,#ff86c2)}
-.leg::after{content:"";position:absolute;right:-10%;top:-40%;width:34%;height:180%;background:linear-gradient(90deg,#ffe6f3,#fff);clip-path:polygon(0 30%,100% 0,55% 50%,100% 100%,0 70%)}
-.leg.l{animation:paddleL .7s ease-in-out infinite alternate}
-.leg.r{animation:paddleR .7s ease-in-out .35s infinite alternate}
-.head i{position:absolute;display:block}
-.head .mane{width:calc(var(--h) * 1.4);height:calc(var(--h) * 1.4);left:calc(var(--h) * -1.5);top:calc(var(--h) * -.7);border-radius:50%;
-  background:radial-gradient(ellipse at 100% 50%,rgba(225,160,255,.95),rgba(255,154,213,.55) 45%,transparent 70%);transform-origin:100% 50%;animation:mane .5s ease-in-out infinite alternate}
-.head .horn{width:calc(var(--h) * 1.25);height:calc(var(--h) * .22);left:calc(var(--h) * -1.15);background:linear-gradient(90deg,#ffb3dc,#fff8fc);border-radius:100% 0 100% 0}
-.head .horn.t{top:calc(var(--h) * -.48);transform:rotate(16deg)}
-.head .horn.b{top:calc(var(--h) * .26);transform:rotate(-16deg) scaleY(-1)}
-.head .skull{width:calc(var(--h) * 1.3);height:calc(var(--h) * .95);left:calc(var(--h) * -.55);top:calc(var(--h) * -.475);border-radius:45% 60% 60% 45%/50%;
-  background:radial-gradient(ellipse at 45% 35%,#ffe0f0 0,#ff7ab8 28%,#ff3f9c 58%,#a8125e 100%);box-shadow:0 0 calc(var(--h) * .6) rgba(255,79,163,.7)}
-.head .snout{width:calc(var(--h) * .85);height:calc(var(--h) * .58);left:calc(var(--h) * .5);top:calc(var(--h) * -.29);border-radius:35% 60% 60% 35%/50%;
-  background:radial-gradient(ellipse at 40% 35%,#ffd6ec,#ff5aa9 55%,#b3166a)}
-.head .snout::after{content:"";position:absolute;right:12%;top:30%;width:10%;height:40%;border-left:2px solid rgba(110,0,60,.6);border-right:2px solid rgba(110,0,60,.6)}
-.head .eye{width:calc(var(--h) * .26);height:calc(var(--h) * .17);left:calc(var(--h) * .22);border-radius:50%;
-  background:radial-gradient(circle at 40% 40%,#fff,#fff4b8 55%,#ffcc4d);box-shadow:0 0 8px #fff6cc,0 0 16px #ffd6ec;animation:blink 4.3s infinite}
-.head .eye::after{content:"";position:absolute;left:44%;top:12%;width:16%;height:76%;border-radius:50%;background:#2a001a}
-.head .eye.t{top:calc(var(--h) * -.36)}
-.head .eye.b{top:calc(var(--h) * .19)}
-.head .wh{width:calc(var(--h) * 2.6);height:calc(var(--h) * .9);left:calc(var(--h) * -1.45);border:2px solid transparent;border-radius:50%;transform-origin:100% 50%}
-.head .wh.t{top:calc(var(--h) * -1.05);border-top-color:rgba(255,230,245,.9);animation:whT 1.1s ease-in-out infinite alternate}
-.head .wh.b{top:calc(var(--h) * .15);border-bottom-color:rgba(255,230,245,.9);animation:whB 1.1s ease-in-out .3s infinite alternate}
-.tail i{position:absolute;display:block;width:calc(var(--t) * 2.6);height:calc(var(--t) * .7);left:calc(var(--t) * -2.6);top:calc(var(--t) * -.35);border-radius:50%;
-  background:linear-gradient(90deg,transparent,rgba(210,140,255,.7) 40%,rgba(255,150,205,.95));transform-origin:100% 50%;animation:tuft .6s ease-in-out infinite alternate}
-.tail i:nth-child(2){transform:rotate(22deg);animation-delay:.2s}
-.tail i:nth-child(3){transform:rotate(-22deg);animation-delay:.4s}
-
 /* ---------- 3D title ---------- */
 #title{position:absolute;left:0;top:0;width:96vw;margin-left:-48vw;text-align:center;font-family:'Fredoka',system-ui,sans-serif;font-weight:700;font-size:var(--fs);line-height:1.08;pointer-events:none}
 .wd{display:block;white-space:nowrap}
@@ -174,7 +139,7 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
 .tr{position:absolute;width:var(--sz);height:var(--sz);margin:calc(var(--sz) * -.5);border-radius:50%;background:#fff;box-shadow:0 0 8px 2px var(--c);animation:trail 1s ease-out forwards}
 
 /* ---------- button ---------- */
-.btn3d{position:absolute;left:50%;top:calc(50% + var(--gy) + var(--b) * .5 + 74px);transform:translateX(-50%);
+.btn3d{position:absolute;left:50%;top:calc(50% + var(--gy) + var(--b) * .5 + 100px);transform:translateX(-50%);
   font:700 clamp(16px,4.6vw,20px)/1 'Poppins',system-ui,sans-serif;letter-spacing:.3em;text-indent:.3em;text-transform:uppercase;color:#fff;
   padding:18px 40px;border-radius:18px;border:0;cursor:pointer;white-space:nowrap;
   background:linear-gradient(180deg,#ff9ad0 0%,#ff4fa3 55%,#e3237f 100%);
@@ -250,6 +215,7 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
     <div class="raysw" id="rays"><div class="rays r1"></div><div class="rays r2"></div><div class="core"></div></div>
   </div>
 
+  <canvas id="glb" class="gl"></canvas>
   <div id="viewport" class="absolute inset-0">
     <div id="scene">
       <div class="floor"></div>
@@ -273,6 +239,7 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
     </div>
   </div>
 
+  <canvas id="glf" class="gl"></canvas>
   <div id="fx" class="absolute inset-0 pointer-events-none"></div>
   <button id="btn" class="btn3d" type="button" lang="en">click me</button>
   <div id="flash" class="absolute inset-0 pointer-events-none"></div>
@@ -280,13 +247,18 @@ html,body{height:100%;overflow:hidden;-webkit-tap-highlight-color:transparent;to
   <button id="replay" class="absolute left-1/2 -translate-x-1/2 bottom-[calc(20px+env(safe-area-inset-bottom))] text-[13px] tracking-[.12em] text-pink-200 font-[Poppins] px-5 py-2.5 rounded-full border border-pink-300/40 bg-white/5 backdrop-blur opacity-0 pointer-events-none transition-opacity duration-1000">↺ tekrar</button>
 </div>
 
-<script>
-(() => {
-'use strict';
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
 const MESSAGE = (new URLSearchParams(location.search).get('m') || 'malkafa bokitoli').trim();
 
 const $ = s => document.querySelector(s);
 const TAU = Math.PI * 2, rnd = (a, b) => a + Math.random() * (b - a), pick = a => a[Math.random() * a.length | 0];
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const PINKS = ['#ff4fa3', '#ff7ab8', '#ffb3d9', '#ffd6ec', '#c77dff', '#ff2d7a', '#ffe9f4'];
 const root = document.documentElement.style;
 const fx = $('#fx'), scene = $('#scene'), gift = $('#gift'), giftbob = $('#giftbob'), giftpos = $('#giftpos'), title = $('#title'), btn = $('#btn'), app = $('#app');
@@ -323,96 +295,469 @@ function buildSky() {
   }
 }
 
-/* ---------- dragon (CSS spheres placed in 3D by JS) ---------- */
-const dragon = { N: 34, pts: [], els: [], blend: 0, orbit: false, excite: 0, breathT: 3, trailT: 0 };
-function buildDragon() {
-  const dg = document.createElement('div'); dg.className = 'dg';
-  const H0 = Math.max(28, Math.min(M * .095, 58));
-  dragon.size = [];
-  for (let i = 1; i < dragon.N; i++) {
-    const u = i / (dragon.N - 1), s = H0 * (.78 * Math.pow(1 - u, .8) + .14);
-    dragon.size[i] = s;
-    const seg = document.createElement('div'); seg.className = 'seg'; seg.style.setProperty('--s', s + 'px');
-    let html = '<i></i>';
-    if (i === 5 || i === 14) html = `<div class="leg l"></div><div class="leg r"></div>` + html;
-    seg.innerHTML = html;
-    dg.appendChild(seg); dragon.els[i] = seg;
-  }
-  const tail = document.createElement('div'); tail.className = 'tail';
-  tail.style.setProperty('--t', H0 * .5 + 'px'); tail.innerHTML = '<i></i><i></i><i></i>';
-  dg.appendChild(tail); dragon.tail = tail;
-  const head = document.createElement('div'); head.className = 'head'; head.style.setProperty('--h', H0 * 1.25 + 'px');
-  head.innerHTML = '<i class="mane"></i><i class="horn t"></i><i class="horn b"></i><i class="wh t"></i><i class="wh b"></i><i class="skull"></i><i class="snout"></i><i class="eye t"></i><i class="eye b"></i>';
-  dg.appendChild(head); dragon.head = head;
-  dragon.sp = i => (dragon.size[Math.max(1, i)] || H0 * .8) * .42;
-  scene.insertBefore(dg, $('#giftpos'));
-  for (let i = 0; i < dragon.N; i++) dragon.pts.push(pathAt(-i * .05));
-}
-function wander(t) {
-  t *= 1.25;
-  return [W * .38 * Math.sin(t * .33) + W * .08 * Math.sin(t * .9),
-          H * .26 * Math.sin(t * .47 + .6) - H * .04,
-          M * .8 * Math.sin(t * .29 + 1.3) - M * .45];
-}
-function orbit(t) {
-  const a = t * .95, s = Math.sin(a);
-  return [Math.min(W * .44, H * .5) * Math.cos(a), H * (s > 0 ? .3 : .14) * s - H * .04 + H * .03 * Math.sin(a * 3), M * (s > 0 ? .45 : 1) * s];
-}
-function pathAt(t) {
-  const a = wander(t);
-  if (dragon.blend <= 0) return a;
-  const b = orbit(t), k = dragon.blend * dragon.blend * (3 - 2 * dragon.blend);
-  return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
-}
-const proj = p => { const f = PERSP / (PERSP - p[2]); return [p[0] * f, p[1] * f]; };
-function updateDragon(dt) {
-  if (dragon.orbit) dragon.blend = Math.min(1, dragon.blend + dt / 2.5);
-  const P = dragon.pts;
-  P[0] = pathAt(T);
-  for (let i = 1; i < dragon.N; i++) {
-    const a = P[i - 1], b = P[i], dx = a[0] - b[0], dy = a[1] - b[1], dz = a[2] - b[2], d = Math.hypot(dx, dy, dz) || 1, s = dragon.sp(i);
-    b[0] = a[0] - dx / d * s; b[1] = a[1] - dy / d * s; b[2] = a[2] - dz / d * s;
-  }
-  const ang = i => { const a = proj(P[Math.max(0, i - 1)]), b = proj(P[i === 0 ? 1 : i]); return i === 0 ? Math.atan2(a[1] - b[1], a[0] - b[0]) : Math.atan2(a[1] - b[1], a[0] - b[0]); };
-  for (let i = 1; i < dragon.N; i++) {
-    const p = P[i];
-    dragon.els[i].style.transform = `translate3d(${p[0].toFixed(1)}px,${p[1].toFixed(1)}px,${p[2].toFixed(1)}px) rotate(${ang(i).toFixed(3)}rad)`;
-  }
-  const h = P[0], ha = ang(0), tl = P[dragon.N - 1];
-  dragon.head.style.transform = `translate3d(${h[0].toFixed(1)}px,${h[1].toFixed(1)}px,${(h[2] + 2).toFixed(1)}px) rotate(${ha.toFixed(3)}rad)`;
-  dragon.tail.style.transform = `translate3d(${tl[0].toFixed(1)}px,${tl[1].toFixed(1)}px,${tl[2].toFixed(1)}px) rotate(${ang(dragon.N - 1).toFixed(3)}rad)`;
+/* ======================================================================
+   WebGL creatures: a scaled pink dragon + a fluffy Maltese.
+   World units = CSS px of the #scene (origin at screen centre, z toward viewer),
+   with y flipped. The dragon is drawn twice with a clip plane at the title plane:
+   the far half on a canvas behind the CSS scene, the near half on one in front.
+   ====================================================================== */
+const UP = new THREE.Vector3(0, 1, 0);
+function makeCreatures() {
+  const rBack = new THREE.WebGLRenderer({ canvas: $('#glb'), antialias: true, alpha: true, powerPreference: 'high-performance' });
+  const rFront = new THREE.WebGLRenderer({ canvas: $('#glf'), antialias: true, alpha: true, powerPreference: 'high-performance' });
+  const s3 = new THREE.Scene();
+  const envs = [rBack, rFront].map(r => {
+    r.setClearColor(0x000000, 0);
+    r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.05;
+    r.outputColorSpace = THREE.SRGBColorSpace;
+    const pm = new THREE.PMREMGenerator(r), tx = pm.fromScene(new RoomEnvironment(), .04).texture; pm.dispose();
+    return tx;
+  });
+  const camera = new THREE.PerspectiveCamera(50, 1, 10, 9000);
+  camera.position.set(0, 0, PERSP);
+  const world = new THREE.Group(); s3.add(world);
+  s3.add(new THREE.HemisphereLight(0xffd6f0, 0x2a0636, 1.1));
+  const key = new THREE.DirectionalLight(0xffffff, 2.6); key.position.set(-.5, 1, .8); s3.add(key);
+  const rim = new THREE.DirectionalLight(0xc77dff, 2.4); rim.position.set(.5, .3, -1); s3.add(rim);
+  const rim2 = new THREE.DirectionalLight(0xff4fa3, 1.4); rim2.position.set(-.7, -.3, -.6); s3.add(rim2);
+  const boxLight = new THREE.PointLight(0xff9ad5, 0, 0, 0); s3.add(boxLight);
 
-  // sparkle trail + heart breath, in screen space
-  const [sx, sy] = proj(h), cx = W / 2 + sx, cy = H / 2 + sy;
-  dragon.trailT -= dt;
-  if (dragon.trailT <= 0) {
-    dragon.trailT = .07;
-    const k = P[(Math.random() * dragon.N) | 0], [kx, ky] = proj(k);
-    const e = document.createElement('div'); e.className = 'tr';
-    e.style.left = W / 2 + kx + rnd(-10, 10) + 'px'; e.style.top = H / 2 + ky + rnd(-10, 10) + 'px';
-    e.style.setProperty('--sz', rnd(2, 5) + 'px'); e.style.setProperty('--c', pick(PINKS));
-    fx.appendChild(e); e.addEventListener('animationend', () => e.remove());
+  const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3(), tmp3 = new THREE.Vector3(), mtx = new THREE.Matrix4(), dummy = new THREE.Object3D();
+  const sphG = new THREE.SphereGeometry(1, 32, 24);
+  const coneG = new THREE.ConeGeometry(1, 1, 10); coneG.translate(0, .5, 0);
+  const cylG = new THREE.CylinderGeometry(1, .82, 1, 12);
+  const add = (parent, geo, mat, p, s, r) => { const m = new THREE.Mesh(geo, mat); m.position.set(...p); m.scale.set(...s); if (r) m.rotation.set(...r); parent.add(m); return m; };
+  const cone = (parent, mat, base, dir, len, rad) => { const m = new THREE.Mesh(coneG, mat); m.position.copy(base); m.quaternion.setFromUnitVectors(UP, dir.clone().normalize()); m.scale.set(rad, len, rad); parent.add(m); return m; };
+  const place = (m, a, b, r) => { tmp.subVectors(b, a); const L = tmp.length(); m.position.copy(a).addScaledVector(tmp, .5); m.quaternion.setFromUnitVectors(UP, tmp.normalize()); m.scale.set(r, L, r); };
+  function taperTube(pts, r0, r1, seg = 28, rad = 10) {
+    const curve = new THREE.CatmullRomCurve3(pts), g = new THREE.TubeGeometry(curve, seg, 1, rad, false), pos = g.attributes.position;
+    for (let i = 0; i <= seg; i++) {
+      const c = curve.getPointAt(i / seg), r = r0 + (r1 - r0) * Math.pow(i / seg, .8);
+      for (let j = 0; j <= rad; j++) { const k = i * (rad + 1) + j; pos.setXYZ(k, c.x + (pos.getX(k) - c.x) * r, c.y + (pos.getY(k) - c.y) * r, c.z + (pos.getZ(k) - c.z) * r); }
+    }
+    g.computeVertexNormals(); return g;
   }
-  dragon.breathT -= dt;
-  if (dragon.breathT <= 0) {
-    dragon.breathT = dragon.orbit ? rnd(1.8, 3) : rnd(4, 7);
-    const mx = cx + Math.cos(ha) * 40, my = cy + Math.sin(ha) * 40;
-    for (let i = 0; i < 9; i++) {
-      const a = ha + rnd(-.45, .45), v = M * rnd(.15, .35);
-      confetto({ ox: mx, oy: my, x: Math.cos(a) * v, y: Math.sin(a) * v, z: rnd(-50, 50), fall: rnd(40, 120), d: rnd(1.6, 2.4), heart: true, size: rnd(10, 18) });
+
+  /* ---------- dragon materials ---------- */
+  function scaleCanvas() {
+    const c = document.createElement('canvas'); c.width = c.height = 512; const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, 0, 512);
+    [[0, '#b8165f'], [.2, '#ff3f9c'], [.34, '#ff86c2'], [.4, '#ffd3e8'], [.6, '#ffd3e8'], [.66, '#ff86c2'], [.8, '#ff3f9c'], [1, '#b8165f']].forEach(([o, col]) => g.addColorStop(o, col));
+    x.fillStyle = g; x.fillRect(0, 0, 512, 512);
+    const s = 32;
+    for (let row = 0; row < 32; row++) {
+      const y = row * s * .5;
+      if (y > 512 * .37 && y < 512 * .63) continue;
+      for (let col = 17; col >= -1; col--) {
+        const cx = col * s + (row % 2) * s / 2;
+        const rg = x.createRadialGradient(cx - s * .1, y - s * .08, 1, cx, y, s * .6);
+        rg.addColorStop(0, 'rgba(255,236,246,.6)'); rg.addColorStop(.55, 'rgba(255,130,195,.08)'); rg.addColorStop(1, 'rgba(110,0,55,.55)');
+        x.fillStyle = rg;
+        x.beginPath(); x.ellipse(cx, y, s * .56, s * .44, 0, -Math.PI / 2, Math.PI / 2); x.closePath(); x.fill();
+        x.strokeStyle = 'rgba(90,0,45,.6)'; x.lineWidth = 1.6;
+        x.beginPath(); x.ellipse(cx, y, s * .56, s * .44, 0, -Math.PI / 2, Math.PI / 2); x.stroke();
+      }
+    }
+    for (let u = 0; u < 512; u += 21.333) {
+      const lg = x.createLinearGradient(u, 0, u + 21.333, 0);
+      lg.addColorStop(0, 'rgba(140,30,85,.45)'); lg.addColorStop(.12, 'rgba(255,255,255,.35)'); lg.addColorStop(1, 'rgba(255,255,255,0)');
+      x.fillStyle = lg; x.fillRect(u, 512 * .37, 21.333, 512 * .26);
+    }
+    return c;
+  }
+  const scaleCv = scaleCanvas();
+  const mkTex = (rx, ry, srgb) => { const t = new THREE.CanvasTexture(scaleCv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); t.anisotropy = 4; if (srgb) t.colorSpace = THREE.SRGBColorSpace; return t; };
+  const physical = o => new THREE.MeshPhysicalMaterial(Object.assign({ roughness: .36, metalness: .08, clearcoat: .8, clearcoatRoughness: .22, sheen: .8, sheenRoughness: .4, sheenColor: new THREE.Color('#ffd0ea'), iridescence: .45, iridescenceIOR: 1.35, envMapIntensity: .85 }, o));
+  const bodyMat = physical({ map: mkTex(1, 1, true), bumpMap: mkTex(1, 1), bumpScale: 3, emissive: new THREE.Color('#ff2d7a'), emissiveIntensity: .07, side: THREE.DoubleSide });
+  const headMat = physical({ color: '#ff5aa9', bumpMap: mkTex(3, 2), bumpScale: 2, emissive: new THREE.Color('#ff2d7a'), emissiveIntensity: .08 });
+  const bellyMat = physical({ color: '#ffc8e2', roughness: .45, iridescence: .2 });
+  const hornMat = physical({ color: '#fff2ea', roughness: .28, clearcoat: 1, iridescence: .6, sheenColor: new THREE.Color('#ffffff'), emissive: new THREE.Color('#ffd6ec'), emissiveIntensity: .05 });
+  const maneMat = new THREE.MeshStandardMaterial({ color: '#efc2ff', emissive: '#c77dff', emissiveIntensity: .3, roughness: .55 });
+  const eyeMat = new THREE.MeshStandardMaterial({ color: '#ffd23f', emissive: '#ffae00', emissiveIntensity: 1.1, roughness: .08, metalness: 0 });
+  const darkMat = new THREE.MeshStandardMaterial({ color: '#1a0010', roughness: .25 });
+  const mouthMat = new THREE.MeshStandardMaterial({ color: '#7a0835', roughness: .6 });
+
+  /* ---------- dragon body: a tube rebuilt every frame along a 3D chain ---------- */
+  const DN = 72, RS = 20;
+  const D = { P: [], T: [], N: [], B: [], r: new Float32Array(DN), blend: 0, orbit: false, excite: 0, breathT: 3, trailT: 0, jaw: 0 };
+  for (let i = 0; i < DN; i++) { D.P.push(new THREE.Vector3()); D.T.push(new THREE.Vector3()); D.N.push(new THREE.Vector3()); D.B.push(new THREE.Vector3()); }
+  const profile = u => u < .05 ? .6 + .4 * (u / .05) : u < .28 ? 1 : Math.pow(1 - (u - .28) / .72, .95) * .97 + .03;
+  const nv = DN * (RS + 1), posA = new Float32Array(nv * 3), nrmA = new Float32Array(nv * 3), uvA = new Float32Array(nv * 2), idx = [];
+  for (let i = 0; i < DN; i++) for (let j = 0; j <= RS; j++) { const k = i * (RS + 1) + j; uvA[k * 2] = i / (DN - 1) * 9; uvA[k * 2 + 1] = j / RS; }
+  for (let i = 0; i < DN - 1; i++) for (let j = 0; j < RS; j++) {
+    const a = i * (RS + 1) + j, b = (i + 1) * (RS + 1) + j;
+    idx.push(a, b, a + 1, b, b + 1, a + 1);
+  }
+  const bodyGeo = new THREE.BufferGeometry();
+  bodyGeo.setAttribute('position', new THREE.BufferAttribute(posA, 3).setUsage(THREE.DynamicDrawUsage));
+  bodyGeo.setAttribute('normal', new THREE.BufferAttribute(nrmA, 3).setUsage(THREE.DynamicDrawUsage));
+  bodyGeo.setAttribute('uv', new THREE.BufferAttribute(uvA, 2));
+  bodyGeo.setIndex(idx);
+  const body = new THREE.Mesh(bodyGeo, bodyMat); body.frustumCulled = false; world.add(body);
+
+  const spineIdx = []; for (let i = 3; i < DN - 7; i += 2) spineIdx.push(i);
+  const spines = new THREE.InstancedMesh(coneG, hornMat, spineIdx.length); spines.frustumCulled = false; world.add(spines);
+  const MANE_RINGS = 12, MANE_PER = 7;
+  const mane = new THREE.InstancedMesh(coneG, maneMat, MANE_RINGS * MANE_PER); mane.frustumCulled = false; world.add(mane);
+  const FIN = 11;
+  const fin = new THREE.InstancedMesh(coneG, maneMat, FIN); fin.frustumCulled = false; world.add(fin);
+
+  // legs
+  const legs = [];
+  for (const li of [13, 34]) for (const side of [-1, 1]) {
+    const L = { i: li, side, up: new THREE.Mesh(cylG, headMat), lo: new THREE.Mesh(cylG, headMat), kn: new THREE.Mesh(sphG, headMat), ft: new THREE.Mesh(sphG, headMat), claws: [] };
+    for (let c = 0; c < 4; c++) L.claws.push(new THREE.Mesh(coneG, hornMat));
+    [L.up, L.lo, L.kn, L.ft, ...L.claws].forEach(m => world.add(m));
+    legs.push(L);
+  }
+
+  // head
+  const head = new THREE.Group(); world.add(head);
+  add(head, sphG, headMat, [0, .12, 0], [1.05, .8, .88]);
+  add(head, sphG, headMat, [.95, -.02, 0], [1.05, .46, .6]);
+  add(head, sphG, headMat, [1.8, .06, 0], [.34, .28, .46]);
+  add(head, sphG, mouthMat, [1.0, -.3, 0], [.85, .14, .44]);
+  for (const s of [1, -1]) {
+    add(head, sphG, darkMat, [2.03, .15, .17 * s], [.07, .05, .07]);
+    add(head, sphG, headMat, [.48, .5, .42 * s], [.6, .15, .22], [0, 0, -.18]);
+    add(head, sphG, eyeMat, [.55, .3, .53 * s], [.18, .15, .14]);
+    add(head, sphG, darkMat, [.64, .3, .63 * s], [.03, .12, .035]);
+    add(head, sphG, new THREE.MeshBasicMaterial({ color: '#ffffff' }), [.64, .38, .6 * s], [.03, .03, .03]);
+    const horn = new THREE.Mesh(taperTube([new THREE.Vector3(-.15, .55, .32 * s), new THREE.Vector3(-.75, .98, .5 * s), new THREE.Vector3(-1.5, 1.15, .62 * s), new THREE.Vector3(-2.3, .92, .55 * s), new THREE.Vector3(-2.75, .55, .42 * s)], .22, .015), hornMat);
+    head.add(horn);
+    const horn2 = new THREE.Mesh(taperTube([new THREE.Vector3(.0, .1, .72 * s), new THREE.Vector3(-.6, .05, 1.05 * s), new THREE.Vector3(-1.2, -.15, 1.15 * s)], .1, .01, 16, 8), hornMat);
+    head.add(horn2);
+    cone(head, hornMat, new THREE.Vector3(1.45, -.2, .22 * s), new THREE.Vector3(.1, -1, 0), .24, .05);
+    cone(head, hornMat, new THREE.Vector3(1.2, -.2, .3 * s), new THREE.Vector3(0, -1, 0), .16, .04);
+    for (let k = 0; k < 4; k++) cone(head, maneMat, new THREE.Vector3(-.5 - k * .12, .25 + k * .05, (.15 + k * .16) * s), new THREE.Vector3(-1, .25 + k * .1, .45 * s), 1.1 - k * .12, .09);
+  }
+  for (let k = 0; k < 5; k++) cone(head, maneMat, new THREE.Vector3(-.4 - k * .1, .7 - k * .02, 0), new THREE.Vector3(-1, .55 - k * .1, 0), 1.2 - k * .12, .1);
+  const jaw = new THREE.Group(); jaw.position.set(.15, -.3, 0); head.add(jaw);
+  add(jaw, sphG, bellyMat, [.75, -.04, 0], [.98, .2, .5]);
+  for (const s of [1, -1]) cone(jaw, hornMat, new THREE.Vector3(1.3, .08, .2 * s), new THREE.Vector3(0, 1, 0), .16, .04);
+  for (let k = 0; k < 6; k++) cone(jaw, maneMat, new THREE.Vector3(.5 - k * .12, -.14, (k % 2 ? .12 : -.12)), new THREE.Vector3(-.8, -1, (k % 2 ? .2 : -.2)), .7 - k * .05, .06);
+  const whiskers = [1, -1].map(s => {
+    const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(26 * 3), 3));
+    const l = new THREE.Line(g, new THREE.LineBasicMaterial({ color: '#ffe6f5', transparent: true, opacity: .9 })); l.frustumCulled = false; head.add(l); return { l, s };
+  });
+
+  function wander(t) {
+    t *= 1.2;
+    return [W * .38 * Math.sin(t * .33) + W * .08 * Math.sin(t * .9),
+            H * .26 * Math.sin(t * .47 + .6) - H * .06,
+            M * .8 * Math.sin(t * .29 + 1.3) - M * .5];
+  }
+  function orbitP(t) {
+    const a = t * .85, s = Math.sin(a);
+    return [Math.min(W * .46, H * .5) * Math.cos(a), H * (s > 0 ? .28 : .14) * s - H * .05 + H * .03 * Math.sin(a * 3), M * (s > 0 ? .5 : 1.05) * s];
+  }
+  function pathAt(t, out) {
+    let a = wander(t);
+    if (D.blend > 0) {
+      const b = orbitP(t), k = D.blend * D.blend * (3 - 2 * D.blend);
+      a = [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k, a[2] + (b[2] - a[2]) * k];
+    }
+    return out.set(a[0], -a[1], a[2]);
+  }
+  function dims() { D.len = clamp(M * 1.55, 420, 1250); D.R = D.len * .033; D.sp = D.len / DN; }
+
+  function updateDragon(dt, t) {
+    if (D.orbit) D.blend = Math.min(1, D.blend + dt / 2.5);
+    D.excite = Math.max(0, D.excite - dt * .4);
+    const P = D.P, Tn = D.T, N = D.N, Bn = D.B, R = D.R;
+    pathAt(t, P[0]);
+    for (let i = 1; i < DN; i++) {
+      tmp.subVectors(P[i - 1], P[i]); const d = tmp.length() || 1;
+      P[i].copy(P[i - 1]).addScaledVector(tmp, -D.sp / d);
+    }
+    for (let i = 0; i < DN; i++) {
+      if (i === 0) Tn[0].subVectors(P[0], P[1]).normalize();
+      else if (i === DN - 1) Tn[i].subVectors(P[i - 1], P[i]).normalize();
+      else Tn[i].subVectors(P[i - 1], P[i + 1]).normalize();
+    }
+    // parallel-transport frames so the back stays a back
+    N[0].copy(UP).addScaledVector(Tn[0], -UP.dot(Tn[0]));
+    if (N[0].lengthSq() < 1e-4) N[0].set(0, 0, 1);
+    N[0].normalize();
+    for (let i = 1; i < DN; i++) { N[i].copy(N[i - 1]).addScaledVector(Tn[i], -N[i - 1].dot(Tn[i])).normalize(); }
+    for (let i = 0; i < DN; i++) Bn[i].crossVectors(Tn[i], N[i]).normalize();
+
+    for (let i = 0; i < DN; i++) {
+      const u = i / (DN - 1);
+      D.r[i] = R * profile(u) * (1 + .045 * Math.sin(i * .45 - t * 5));
+      const r = D.r[i];
+      for (let j = 0; j <= RS; j++) {
+        const th = j / RS * TAU, c = Math.cos(th), s = Math.sin(th), k = (i * (RS + 1) + j) * 3;
+        const ny = c * r * (c < 0 ? .86 : 1), bx = s * r * 1.04;
+        posA[k] = P[i].x + N[i].x * ny + Bn[i].x * bx;
+        posA[k + 1] = P[i].y + N[i].y * ny + Bn[i].y * bx;
+        posA[k + 2] = P[i].z + N[i].z * ny + Bn[i].z * bx;
+        nrmA[k] = N[i].x * c + Bn[i].x * s; nrmA[k + 1] = N[i].y * c + Bn[i].y * s; nrmA[k + 2] = N[i].z * c + Bn[i].z * s;
+      }
+    }
+    bodyGeo.attributes.position.needsUpdate = true; bodyGeo.attributes.normal.needsUpdate = true;
+
+    spineIdx.forEach((i, k) => {
+      const r = D.r[i];
+      dummy.position.copy(P[i]).addScaledVector(N[i], r * .78);
+      tmp.copy(N[i]).addScaledVector(Tn[i], -.8).normalize();
+      dummy.quaternion.setFromUnitVectors(UP, tmp);
+      dummy.scale.set(r * .2, r * (1 + .2 * Math.sin(t * 4 - i * .3)) * (i < 30 ? 1.15 : .9), r * .2);
+      dummy.updateMatrix(); spines.setMatrixAt(k, dummy.matrix);
+    });
+    spines.instanceMatrix.needsUpdate = true;
+
+    let mk = 0;
+    for (let i = 0; i < MANE_RINGS; i++) for (let k = 0; k < MANE_PER; k++) {
+      const ph = (k / (MANE_PER - 1) - .5) * 2.6, r = D.r[i], c = Math.cos(ph), s = Math.sin(ph);
+      tmp2.copy(N[i]).multiplyScalar(c).addScaledVector(Bn[i], s);
+      dummy.position.copy(P[i]).addScaledVector(tmp2, r * .8);
+      tmp.copy(tmp2).multiplyScalar(.55).addScaledVector(Tn[i], -1).addScaledVector(Bn[i], .25 * Math.sin(t * 6 + i * .7 + k));
+      dummy.quaternion.setFromUnitVectors(UP, tmp.normalize());
+      dummy.scale.set(r * .12, r * (2.5 - i * .13), r * .12);
+      dummy.updateMatrix(); mane.setMatrixAt(mk++, dummy.matrix);
+    }
+    mane.instanceMatrix.needsUpdate = true;
+
+    const te = DN - 3;
+    for (let k = 0; k < FIN; k++) {
+      const ph = (k / (FIN - 1) - .5) * 1.9;
+      tmp2.copy(N[te]).multiplyScalar(Math.sin(ph)).addScaledVector(Bn[te], .25 * Math.sin(t * 5 + k));
+      tmp.copy(Tn[te]).multiplyScalar(-1).addScaledVector(tmp2, 1.1);
+      dummy.position.copy(P[te]);
+      dummy.quaternion.setFromUnitVectors(UP, tmp.normalize());
+      dummy.scale.set(R * .16, R * (2.8 - Math.abs(ph) * .9) * (1 + .1 * Math.sin(t * 7 + k)), R * .16);
+      dummy.updateMatrix(); fin.setMatrixAt(k, dummy.matrix);
+    }
+    fin.instanceMatrix.needsUpdate = true;
+
+    for (const L of legs) {
+      const i = L.i, r = D.r[i], ph = t * 5.5 + i + (L.side > 0 ? 0 : Math.PI);
+      const S = tmp3.copy(P[i]).addScaledVector(Bn[i], L.side * r * .72).addScaledVector(N[i], -r * .3).clone();
+      tmp.copy(Bn[i]).multiplyScalar(L.side * .8).addScaledVector(N[i], -.5).addScaledVector(Tn[i], -.3 + .5 * Math.sin(ph)).normalize();
+      const K = S.clone().addScaledVector(tmp, r * 1.45);
+      tmp.copy(Tn[i]).multiplyScalar(.55 + .3 * Math.sin(ph + 1)).addScaledVector(N[i], -.65).addScaledVector(Bn[i], L.side * .25).normalize();
+      const F = K.clone().addScaledVector(tmp, r * 1.25);
+      place(L.up, S, K, r * .32); place(L.lo, K, F, r * .24);
+      L.kn.position.copy(K); L.kn.scale.setScalar(r * .3);
+      L.ft.position.copy(F); L.ft.scale.set(r * .3, r * .22, r * .3);
+      L.claws.forEach((c, k) => {
+        tmp.copy(Tn[i]).multiplyScalar(.85).addScaledVector(N[i], -.45).addScaledVector(Bn[i], L.side * (k - 1.5) * .35).normalize();
+        c.position.copy(F).addScaledVector(tmp, r * .2);
+        c.quaternion.setFromUnitVectors(UP, tmp); c.scale.set(r * .07, r * .5, r * .07);
+      });
+    }
+
+    head.position.copy(P[0]).addScaledVector(Tn[0], R * .25);
+    mtx.makeBasis(Tn[0], N[0], Bn[0]); head.quaternion.setFromRotationMatrix(mtx);
+    head.scale.setScalar(R * 1.2);
+    D.jaw = Math.max(0, D.jaw - dt * .8);
+    jaw.rotation.z = -(.1 + .08 * Math.sin(t * 1.7) + D.jaw * .45);
+    for (const { l, s } of whiskers) {
+      const a = l.geometry.attributes.position;
+      for (let k = 0; k < 26; k++) {
+        const u = k / 25;
+        a.setXYZ(k, 1.75 - u * 5.2, -.05 - u * .7 + Math.sin(t * 3 - k * .45) * .4 * u, s * (.3 + u * 1.7 + Math.cos(t * 2.3 - k * .4) * .3 * u));
+      }
+      a.needsUpdate = true;
+    }
+    bodyMat.emissiveIntensity = .07 + .05 * Math.sin(t * 2) + D.excite * .15;
+  }
+
+  /* ---------- Maltese: shell-textured fur ---------- */
+  const SHELLS = 34;
+  const furGeo = new THREE.SphereGeometry(1, 44, 30);
+  furGeo.setAttribute('shell', new THREE.InstancedBufferAttribute(Float32Array.from({ length: SHELLS }, (_, i) => i / (SHELLS - 1)), 1));
+  const furMats = [];
+  const furVS = `
+    attribute float shell;
+    uniform float uLen, uGrav, uTime, uWind, uScale;
+    varying vec2 vUv; varying vec3 vN; varying float vS; varying vec3 vW;
+    void main(){
+      vec4 w = modelMatrix * vec4(position, 1.0);
+      vec3 wn = normalize(mat3(modelMatrix) * normal);
+      float L = uLen * uScale;
+      w.xyz += wn * L * shell;
+      float s2 = shell * shell;
+      w.y -= uGrav * s2 * L;
+      w.x += sin(uTime * 1.6 + w.y * .045 + w.z * .03) * uWind * s2 * L;
+      w.z += cos(uTime * 1.3 + w.x * .04) * uWind * .6 * s2 * L;
+      vW = w.xyz; vUv = uv; vS = shell; vN = wn;
+      gl_Position = projectionMatrix * viewMatrix * w;
+    }`;
+  const furFS = `
+    uniform vec3 uColor, uRoot, uLight, uRim; uniform vec2 uRep; uniform float uFloor;
+    varying vec2 vUv; varying vec3 vN; varying float vS; varying vec3 vW;
+    float h(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
+    void main(){
+      vec2 g = vUv * uRep, id = floor(g), f = fract(g) - .5;
+      if (vW.y < uFloor) discard;
+      float len = mix(.6, 1., h(id));
+      if (vS > .001) {
+        if (vS > len) discard;
+        if (length(f + (vec2(h(id + 3.1), h(id + 7.7)) - .5) * .35) > .47 * (1. - pow(vS / len, 2.5))) discard;
+      }
+      vec3 N = normalize(vN), V = normalize(cameraPosition - vW);
+      float dif = clamp(dot(N, uLight) * .5 + .5, 0., 1.);
+      float rim = pow(1. - clamp(dot(N, V), 0., 1.), 2.4);
+      float ao = mix(.38, 1., pow(vS, .55));
+      vec3 c = mix(uRoot, uColor, vS) * (.42 + .7 * dif) * ao * mix(.9, 1.05, h(id + 1.7));
+      c += uRim * rim * .45 * vS;
+      c += vec3(1.) * pow(max(dot(N, normalize(uLight + V)), 0.), 20.) * .18 * vS;
+      gl_FragColor = vec4(c, 1.);
+      #include <tonemapping_fragment>
+      #include <colorspace_fragment>
+    }`;
+  const dog = new THREE.Group(); world.add(dog);
+  function fur(parent, pos, scl, rot, len, grav, wind = 1) {
+    const m = new THREE.ShaderMaterial({
+      uniforms: {
+        uLen: { value: len }, uGrav: { value: grav }, uTime: { value: 0 }, uWind: { value: .07 * wind }, uScale: { value: 1 },
+        uColor: { value: new THREE.Color('#ffffff') }, uRoot: { value: new THREE.Color('#d8c3cd') },
+        uRim: { value: new THREE.Color('#ffb3dc') }, uLight: { value: new THREE.Vector3(-.4, .9, .65).normalize() },
+        uRep: { value: new THREE.Vector2(1, 1) }, uFloor: { value: -1e5 }
+      }, vertexShader: furVS, fragmentShader: furFS
+    });
+    m.userData.scl = scl; furMats.push(m);
+    const im = new THREE.InstancedMesh(furGeo, m, SHELLS);
+    const I = new THREE.Matrix4(); for (let i = 0; i < SHELLS; i++) im.setMatrixAt(i, I);
+    im.frustumCulled = false; im.position.set(...pos); im.scale.set(...scl); if (rot) im.rotation.set(...rot);
+    parent.add(im); return im;
+  }
+  const dogBody = new THREE.Group(); dog.add(dogBody);
+  fur(dogBody, [0, .29, -.07], [.29, .28, .32], [-.25, 0, 0], .2, 3.2, .8);
+  fur(dogBody, [0, .46, .06], [.23, .26, .21], null, .19, 3.4, .8);
+  fur(dogBody, [.09, .16, .17], [.065, .17, .065], null, .12, 2.8, .6);
+  fur(dogBody, [-.09, .16, .17], [.065, .17, .065], null, .12, 2.8, .6);
+  fur(dogBody, [.17, .07, -.03], [.09, .065, .14], null, .09, 1.2);
+  fur(dogBody, [-.17, .07, -.03], [.09, .065, .14], null, .09, 1.2);
+  const tailP = new THREE.Group(); tailP.position.set(0, .34, -.3); dogBody.add(tailP);
+  fur(tailP, [0, .12, -.05], [.08, .15, .08], [-.5, 0, 0], .2, .5, 2.2);
+  const headP = new THREE.Group(); headP.position.set(0, .6, .08); dogBody.add(headP);
+  fur(headP, [0, .19, .04], [.235, .22, .22], null, .085, 1.6, .7);
+  fur(headP, [0, .12, .22], [.11, .09, .11], null, .05, 1.2, .5);
+  const earL = fur(headP, [-.21, .1, .03], [.075, .18, .065], [0, 0, .2], .17, 3.6, 1.3);
+  const earR = fur(headP, [.21, .1, .03], [.075, .18, .065], [0, 0, -.2], .17, 3.6, 1.3);
+  const glossBlack = new THREE.MeshPhysicalMaterial({ color: '#0d0507', roughness: .12, clearcoat: 1, clearcoatRoughness: .05 });
+  const eyes = [-1, 1].map(s => add(headP, sphG, glossBlack, [.085 * s, .215, .27], [.036, .036, .03]));
+  add(headP, sphG, glossBlack, [0, .14, .36], [.042, .032, .034]);
+  const tongue = add(headP, sphG, new THREE.MeshPhysicalMaterial({ color: '#ff6f9c', roughness: .35, clearcoat: .6 }), [0, .075, .33], [.032, .012, .05], [.5, 0, 0]);
+  tongue.visible = false;
+  const bowMat = physical({ color: '#ff4fa3', roughness: .3, iridescence: .3 });
+  const bow = new THREE.Group(); bow.position.set(0, .45, .03); headP.add(bow);
+  for (const s of [-1, 1]) add(bow, sphG, bowMat, [.065 * s, 0, 0], [.07, .045, .035], [0, 0, .35 * s]);
+  add(bow, sphG, bowMat, [0, 0, 0], [.028, .028, .028]);
+  const shadowCv = document.createElement('canvas'); shadowCv.width = shadowCv.height = 64;
+  { const x = shadowCv.getContext('2d'), g = x.createRadialGradient(32, 32, 0, 32, 32, 32); g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(1, 'rgba(255,255,255,0)'); x.fillStyle = g; x.fillRect(0, 0, 64, 64); }
+  const dogShadow = new THREE.Mesh(new THREE.CircleGeometry(.48, 32), new THREE.MeshBasicMaterial({ color: '#12000a', transparent: true, opacity: .3, alphaMap: new THREE.CanvasTexture(shadowCv), depthWrite: false }));
+  dogShadow.rotation.x = -Math.PI / 2; dogShadow.position.y = .004; dog.add(dogShadow);
+  const DOG = { happyT: -1, hops: 0, base: new THREE.Vector3(), home: new THREE.Vector3(), after: new THREE.Vector3(), S: 100, blinkT: 2 };
+
+  function placeDog() {
+    DOG.S = B * .82;
+    dog.scale.setScalar(DOG.S);
+    DOG.home.set(B * .62, -(GY + B * .5 + 46), B * .75);
+    // after the box opens: sit lower right, under the title (feet at ~84% screen height)
+    const z2 = B * .5, f2 = PERSP / (PERSP - z2);
+    DOG.after.set(Math.min(W * .2, W / 2 - DOG.S * .45) / f2, -(H * .34) / f2, z2);
+    DOG.base.copy(DOG.happyT >= 0 ? DOG.after : DOG.home);
+    dog.position.copy(DOG.base);
+    dog.rotation.y = -.42;
+    for (const m of furMats) {
+      const s = m.userData.scl;
+      m.uniforms.uScale.value = DOG.S;
+      m.uniforms.uRep.value.set(Math.max(8, TAU * Math.max(s[0], s[2]) * DOG.S / 1.9), Math.max(6, Math.PI * s[1] * DOG.S / 1.9));
     }
   }
-}
-
-/* ---------- gift lighting ---------- */
-const faces = [...document.querySelectorAll('.f0,.f1,.f2,.f3')], lidFaces = [...document.querySelectorAll('.l0,.l1,.l2,.l3')];
-const FACE_ANG = [0, 90, 180, -90], LIGHT = -40;
-let spin = 20, tiltX = 0, tiltY = 0, tgtX = 0, tgtY = 0;
-function shadeFaces() {
-  for (let i = 0; i < 4; i++) {
-    const c = Math.cos((FACE_ANG[i] + spin - LIGHT) * Math.PI / 180), s = Math.max(0, .34 - .34 * c).toFixed(3);
-    faces[i].style.setProperty('--shade', s); lidFaces[i].style.setProperty('--shade', s);
+  function updateDog(dt, t) {
+    world.updateMatrixWorld(true); tmp3.copy(DOG.base).applyMatrix4(world.matrixWorld);
+    for (const m of furMats) { m.uniforms.uTime.value = t; m.uniforms.uFloor.value = tmp3.y - DOG.S * .01; }
+    const happy = DOG.happyT >= 0;
+    let hop = 0;
+    if (happy) {
+      DOG.happyT += dt;
+      const ht = DOG.happyT;
+      DOG.base.lerpVectors(DOG.home, DOG.after, clamp(ht / 1.4, 0, 1) ** 2 * (3 - 2 * clamp(ht / 1.4, 0, 1)));
+      dog.position.x = DOG.base.x; dog.position.z = DOG.base.z;
+      if (ht < 2.1) hop = Math.abs(Math.sin(ht * Math.PI / .7)) * .22;
+      else if ((ht % 3.4) < .7) hop = Math.abs(Math.sin((ht % 3.4) * Math.PI / .7)) * .14;
+    }
+    dog.position.y = DOG.base.y + hop * DOG.S;
+    dogBody.scale.set(1 - hop * .15, 1 + hop * .35 + Math.sin(t * 2.3) * .012, 1 - hop * .15);
+    dogShadow.scale.setScalar(1 - hop * 1.5); dogShadow.position.y = .004 - hop;
+    tailP.rotation.z = Math.sin(t * (happy ? 16 : 6)) * (happy ? .6 : .35);
+    tailP.rotation.x = -.1 + Math.sin(t * 3) * .05;
+    // look at the dragon's head
+    tmp.copy(head.position).sub(dog.position);
+    const yaw = clamp(Math.atan2(tmp.x, tmp.z) - dog.rotation.y, -.75, .75);
+    const pitch = clamp(Math.atan2(tmp.y, Math.hypot(tmp.x, tmp.z)) * .6, -.35, .35);
+    headP.rotation.y += (yaw - headP.rotation.y) * Math.min(1, dt * 3);
+    headP.rotation.x += (-pitch - headP.rotation.x) * Math.min(1, dt * 3);
+    headP.rotation.z = Math.sin(t * .9) * .12 + (happy ? Math.sin(t * 4) * .08 : 0);
+    earL.rotation.z = .22 + Math.sin(t * 2.1) * .04 + hop * .9; earR.rotation.z = -.22 - Math.sin(t * 2.1 + 1) * .04 - hop * .9;
+    DOG.blinkT -= dt;
+    const bl = DOG.blinkT < 0 && DOG.blinkT > -.13 ? .12 : 1;
+    if (DOG.blinkT < -.13) DOG.blinkT = rnd(2, 5);
+    eyes.forEach(e => e.scale.y = .036 * bl);
+    tongue.visible = happy;
+    if (happy) tongue.scale.y = .012 * (1 + .25 * Math.sin(t * 10));
+    eyes.forEach(e => e.scale.x = .036);
   }
+
+  const planeB = new THREE.Plane(), planeF = new THREE.Plane(), nz = new THREE.Vector3();
+  const api = {
+    resize() {
+      rBack.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5)); rBack.setSize(W, H, false);
+      rFront.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); rFront.setSize(W, H, false);
+      camera.aspect = W / H; camera.fov = 2 * Math.atan(H / 2 / PERSP) * 180 / Math.PI; camera.updateProjectionMatrix();
+      dims(); placeDog();
+    },
+    init() { for (let i = 0; i < DN; i++) pathAt(-i * .02, D.P[i]); },
+    orbit() { D.orbit = true; D.excite = 1.5; D.breathT = 1; boxLight.intensity = 4; },
+    happy() { DOG.happyT = 0; },
+    // screen-space position of a world point
+    screen(v) { tmp.copy(v).applyMatrix4(world.matrixWorld).project(camera); return [(tmp.x + 1) / 2 * W, (1 - tmp.y) / 2 * H]; },
+    update(dt, t, rx, ry) {
+      world.rotation.set(-rx * Math.PI / 180, ry * Math.PI / 180, 0, 'XYZ');
+      updateDragon(dt, t); updateDog(dt, t);
+      boxLight.position.set(0, -(GY + H * .34), -200);
+      boxLight.intensity *= D.orbit ? 1 : 0;
+      world.updateMatrixWorld(true);
+
+      // sparkle trail + heart breath
+      D.trailT -= dt;
+      if (D.trailT <= 0) {
+        D.trailT = .06;
+        const [x, y] = api.screen(D.P[(Math.random() * DN) | 0]);
+        const e = document.createElement('div'); e.className = 'tr';
+        e.style.left = x + rnd(-8, 8) + 'px'; e.style.top = y + rnd(-8, 8) + 'px';
+        e.style.setProperty('--sz', rnd(2, 5) + 'px'); e.style.setProperty('--c', pick(PINKS));
+        fx.appendChild(e); e.addEventListener('animationend', () => e.remove());
+      }
+      D.breathT -= dt;
+      if (D.breathT <= 0) {
+        D.breathT = D.orbit ? rnd(1.8, 3) : rnd(4, 7);
+        D.jaw = 1;
+        const mouth = new THREE.Vector3(2.2, -.15, 0); head.localToWorld(mouth);
+        const ahead = new THREE.Vector3(3.5, -.15, 0); head.localToWorld(ahead);
+        tmp2.copy(mouth); world.worldToLocal(tmp2); const [mx, my] = api.screen(tmp2);
+        tmp2.copy(ahead); world.worldToLocal(tmp2); const [ax, ay] = api.screen(tmp2);
+        const ha = Math.atan2(ay - my, ax - mx);
+        setTimeout(() => {
+          for (let i = 0; i < 9; i++) {
+            const a = ha + rnd(-.45, .45), v = M * rnd(.15, .35);
+            confetto({ ox: mx, oy: my, x: Math.cos(a) * v, y: Math.sin(a) * v, z: rnd(-50, 50), fall: rnd(40, 120), d: rnd(1.6, 2.4), heart: true, size: rnd(10, 18) });
+          }
+        }, 180);
+      }
+
+      nz.set(0, 0, 1).applyEuler(world.rotation);
+      planeB.set(nz.clone().negate(), 0); planeF.set(nz, 0);
+      dog.visible = false; rBack.clippingPlanes = [planeB]; s3.environment = envs[0]; rBack.render(s3, camera);
+      dog.visible = true; rFront.clippingPlanes = [planeF]; s3.environment = envs[1]; rFront.render(s3, camera);
+    }
+  };
+  return api;
 }
 
 /* ---------- 3D letters ---------- */
@@ -441,6 +786,17 @@ function buildTitle() {
   const hw = document.createElement('span'); hw.className = 'wd';
   hw.innerHTML = `<span class="h3" id="h3"><span class="beat"><span class="spin">${hz.join('')}</span></span></span>`;
   title.appendChild(hw);
+}
+
+/* ---------- gift lighting ---------- */
+const faces = [...document.querySelectorAll('.f0,.f1,.f2,.f3')], lidFaces = [...document.querySelectorAll('.l0,.l1,.l2,.l3')];
+const FACE_ANG = [0, 90, 180, -90], LIGHT = -40;
+let spin = 20, tiltX = 0, tiltY = 0, tgtX = 0, tgtY = 0;
+function shadeFaces() {
+  for (let i = 0; i < 4; i++) {
+    const c = Math.cos((FACE_ANG[i] + spin - LIGHT) * Math.PI / 180), s = Math.max(0, .34 - .34 * c).toFixed(3);
+    faces[i].style.setProperty('--shade', s); lidFaces[i].style.setProperty('--shade', s);
+  }
 }
 
 /* ---------- confetti / fireworks (CSS-animated, JS-spawned) ---------- */
@@ -543,9 +899,9 @@ function openBox() {
   sfx.boom(); vib([90, 40, 200]);
   gift.classList.add('open');
   $('#rays').classList.add('on');
-  const fl = $('#flash'); fl.classList.add('on');
+  $('#flash').classList.add('on');
   app.classList.add('shake');
-  dragon.orbit = true; dragon.breathT = 1;
+  if (G) { G.orbit(); G.happy(); }
   const ox = W / 2, oy = H / 2 + GY - B * .4, far = Math.max(W, H);
   for (let i = 0; i < 170; i++) {
     const a = rnd(Math.PI * 1.05, Math.PI * 1.95) + (Math.random() < .25 ? rnd(-1, 1) : 0), v = far * rnd(.2, .62);
@@ -583,25 +939,29 @@ function finale() {
   setTimeout(() => { const rp = $('#replay'); rp.style.opacity = .85; rp.style.pointerEvents = 'auto'; }, 3500);
 }
 $('#replay').addEventListener('click', () => location.reload());
+app.addEventListener('scroll', () => { app.scrollTop = 0; app.scrollLeft = 0; });
 
 /* ---------- input tilt ---------- */
 addEventListener('pointermove', e => { tgtY = (e.clientX / W - .5) * 22; tgtX = -(e.clientY / H - .5) * 14; });
 addEventListener('deviceorientation', e => {
   if (e.gamma == null) return;
-  tgtY = Math.max(-20, Math.min(20, e.gamma * .6)); tgtX = Math.max(-14, Math.min(14, (e.beta - 45) * -.4));
+  tgtY = clamp(e.gamma * .6, -20, 20); tgtX = clamp((e.beta - 45) * -.4, -14, 14);
 });
 
 /* ---------- layout ---------- */
 function layout() {
   W = innerWidth; H = innerHeight; M = Math.min(W, H);
   B = Math.round(Math.max(110, Math.min(W * .42, H * .25, 240)));
-  GY = Math.round(H * .04);
+  GY = Math.round(-H * .03);
   const longest = Math.max(...MESSAGE.split(/\s+/).map(w => [...w].length));
   FS = Math.round(Math.max(34, Math.min(W * .9 / (longest * .62), H * .12, 130)));
   root.setProperty('--b', B + 'px'); root.setProperty('--lw', Math.round(B * 1.08) + 'px'); root.setProperty('--lh', Math.round(B * .24) + 'px');
   root.setProperty('--gy', GY + 'px'); root.setProperty('--fs', FS + 'px'); root.setProperty('--dz', (FS * .02).toFixed(2) + 'px');
+  if (G) G.resize();
 }
-layout(); buildSky(); buildTitle(); buildDragon();
+let G = null;
+layout(); buildSky(); buildTitle();
+try { G = makeCreatures(); G.resize(); G.init(); } catch (e) { console.warn('WebGL kapali, yaratiklar yok:', e); G = null; }
 addEventListener('resize', () => { layout(); buildSky(); });
 
 /* ---------- loop ---------- */
@@ -609,12 +969,13 @@ let last = performance.now(), petT = 0;
 function frame(now) {
   const dt = Math.min((now - last) / 1000, .05); last = now; T += dt;
   tiltX += (tgtX - tiltX) * Math.min(1, dt * 3); tiltY += (tgtY - tiltY) * Math.min(1, dt * 3);
-  scene.style.transform = `rotateX(${(tiltX + Math.sin(T * .5) * 2).toFixed(2)}deg) rotateY(${(tiltY + Math.sin(T * .37) * 4).toFixed(2)}deg)`;
+  const rx = tiltX + Math.sin(T * .5) * 2, ry = tiltY + Math.sin(T * .37) * 4;
+  scene.style.transform = `rotateX(${rx.toFixed(2)}deg) rotateY(${ry.toFixed(2)}deg)`;
   spin += dt * (started ? 60 : 24);
   gift.style.transform = `rotateX(-22deg) rotateY(${spin.toFixed(1)}deg)`;
   shadeFaces();
   if (titleOn) title.style.transform = `translateY(${-(H * .1 + FS * .55).toFixed(0)}px) rotateY(${(Math.sin(T * .7) * 18).toFixed(2)}deg) rotateX(${(Math.sin(T * .53) * 7).toFixed(2)}deg)`;
-  updateDragon(dt);
+  if (G) G.update(dt, T, rx, ry);
   if (petals) {
     petT -= dt;
     if (petT <= 0) {
@@ -626,7 +987,6 @@ function frame(now) {
 }
 title.style.transform = `translateY(${-(H * .1 + FS * .55).toFixed(0)}px)`;
 requestAnimationFrame(frame);
-})();
 </script>
 </body>
 </html>
